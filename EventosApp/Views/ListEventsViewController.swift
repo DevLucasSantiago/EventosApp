@@ -104,14 +104,14 @@ extension ListEventsViewController: UITableViewDataSource {
 
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.navigateToDetail(id: indexPath.row)
-    }
 }
 
 //MARK: - UITableViewDelegate
 
 extension ListEventsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.navigateToDetail(id: indexPath.row)
+    }
     
 }

@@ -79,7 +79,10 @@ extension ListDetailEventsViewController: DetailEventCellDelegate {
     }
     
     func share(share: Event?) {
-        let items: [Any] = [share?.title, URL(string: share?.image ?? "")]
+        guard let title = share?.title, let image = URL(string: share?.image ?? "") else {
+            return
+        }
+        let items: [Any] = [title, image]
         let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
         present(ac, animated: true)
     }
@@ -88,6 +91,9 @@ extension ListDetailEventsViewController: DetailEventCellDelegate {
 //MARK: - UITableViewDelegate
 
 extension ListDetailEventsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
 }
 
 //MARK: - UITableViewDataSource
@@ -103,16 +109,13 @@ extension ListDetailEventsViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        guard let contact = self.viewModel.event(at: indexPath.row) else {
+        guard let event = self.viewModel.event(at: indexPath.row) else {
             return UITableViewCell()
         }
         
-        cell.configure(contact)
+        cell.configure(event)
         cell.delegate = self
         return cell
-    }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
     }
 }
 
@@ -130,6 +133,14 @@ extension ListDetailEventsViewController: ListDetailEventsViewDelegate {
     func showSuccess() {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: "Sucesso", message: "Check-in confirmado", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
+    }
+    
+    func showStringError(text: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Erro", message: text, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true)
         }

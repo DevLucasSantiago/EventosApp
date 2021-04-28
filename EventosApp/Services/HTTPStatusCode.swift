@@ -12,8 +12,8 @@ public enum HTTPStatusCode: Int {
     case `continue` = 100
     case switchingProtocols
     case processing
-    // MARK: 201 Success
-    case ok = 201
+    // MARK: 200 Success
+    case ok = 200
     case created
     case accepted
     case nonAuthoritativeInformation

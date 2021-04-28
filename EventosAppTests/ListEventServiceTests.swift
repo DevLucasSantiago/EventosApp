@@ -39,7 +39,7 @@ class ListEventServiceTests: XCTestCase {
         }
     }
 
-    func testLoadContactsError(){
+    func testLoadEventsError(){
         let viewModel = ListEventsViewModel(service: ListEventServiceFailureMock())
         viewModel.loadEvents { (result) in
             switch result {
@@ -58,7 +58,7 @@ class ListEventServiceTests: XCTestCase {
 
         let exp = expectation(description: "sei la")
 
-        service.fetchContacts { (result) in
+        service.fetchEvents { (result) in
             switch result {
             case .success(_ ):
                 XCTFail()
@@ -81,7 +81,7 @@ class ListEventServiceTests: XCTestCase {
 
         let exp = expectation(description: "sei la")
 
-        service.fetchContacts { (result) in
+        service.fetchEvents { (result) in
             switch result {
             case .success(_ ):
                 XCTFail()
@@ -104,7 +104,7 @@ class ListEventServiceTests: XCTestCase {
 
         let exp = expectation(description: "sei la")
 
-        service.fetchContacts { (result) in
+        service.fetchEvents { (result) in
             switch result {
             case .success(_ ):
                 XCTFail()
@@ -130,14 +130,14 @@ class ListEventServiceTests: XCTestCase {
 
         let mockEvent = Event(date: 1534784400, description: "O Patas", image: "http://lproweb.procempa.com.br/pmpa/prefpoa/seda_news/usu_img/Papel%20de%20Parede.png", longitude: -51.2146267, latitude: -30.0392981, price: 29.99, title: "Feira de adoção de animais na Redenção", id: "1")
 
-        service.fetchContacts { (result) in
+        service.fetchEvents { (result) in
             switch result {
             case .success(let events):
                 XCTAssertEqual(events[0],mockEvent)
                 XCTAssertEqual(events.count,1)
                 exp.fulfill()
                 return
-            case .failure(let error):
+            case .failure:
                 XCTFail()
                 exp.fulfill()
                 return
@@ -183,7 +183,6 @@ class URLSessionDataTaskMock: URLSessionDataTask {
     override func resume() {
         self.completion(self.dataMock, self.responseMock, self.errorMock)
     }
-
 }
 
 var mockData: Data? {
@@ -206,7 +205,7 @@ class ListEventServiceSucessMock: ListEventServiceProtocol {
         completion(.success(checkIn))
     }
     
-    func fetchContacts(completion: @escaping (Result<[Event], ListEventServiceError>) -> Void) {
+    func fetchEvents(completion: @escaping (Result<[Event], ListEventServiceError>) -> Void) {
         if let data = mockData, let model = try? JSONDecoder().decode([Event].self, from: data) as [Event] {
             completion(.success(model))
             return
@@ -220,7 +219,7 @@ class ListEventServiceFailureMock: ListEventServiceProtocol {
         completion(.failure(.badURL))
     }
     
-    func fetchContacts(completion: @escaping (Result<[Event], ListEventServiceError>) -> Void) {
+    func fetchEvents(completion: @escaping (Result<[Event], ListEventServiceError>) -> Void) {
         completion(.failure(.badURL))
     }
 }

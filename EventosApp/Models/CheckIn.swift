@@ -7,14 +7,8 @@
 
 import Foundation
 
-class CheckIn: Codable {
+struct CheckIn: Codable {
     var eventId: String
     var name: String
     var email: String
-    
-    init(eventId: String, name: String, email: String) {
-        self.eventId = eventId
-        self.name = name
-        self.email = email
-    }
 }

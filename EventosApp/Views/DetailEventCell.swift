@@ -120,6 +120,7 @@ class DetailEventCell: UITableViewCell {
         let btn = Utils.buildCornedButton(title: "Check-in")
         btn.backgroundColor = .red
         btn.isUserInteractionEnabled = true
+        btn.showsTouchWhenHighlighted = true
         return btn
     }()
     
@@ -127,6 +128,7 @@ class DetailEventCell: UITableViewCell {
         let btn = Utils.buildCornedButton(title: "Compartilhar")
         btn.backgroundColor = .red
         btn.isUserInteractionEnabled = true
+        btn.showsTouchWhenHighlighted = true
         return btn
     }()
     

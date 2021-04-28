@@ -37,7 +37,7 @@ class ListEventsViewModel {
     }
     
     func loadEvents(_ completion: @escaping (Result<[Event],ListEventServiceError>) -> Void) {
-        service.fetchContacts { (result) in
+        service.fetchEvents { (result) in
             if case .success(let eventos) = result {
                 self.eventos = eventos
             }

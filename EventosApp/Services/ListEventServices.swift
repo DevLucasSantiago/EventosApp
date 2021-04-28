@@ -16,7 +16,7 @@ enum ListEventServiceError: Error {
 }
 
 protocol ListEventServiceProtocol {
-    func fetchContacts(completion: @escaping (Result<[Event],ListEventServiceError>) -> Void)
+    func fetchEvents(completion: @escaping (Result<[Event],ListEventServiceError>) -> Void)
     func postCheckIn(_ checkIn:CheckIn, completion: @escaping (Result<CheckIn,ListEventServiceError>) -> Void)
 }
 
@@ -31,7 +31,7 @@ class ListEventService: NSObject, ListEventServiceProtocol {
         self.session = session
     }
     
-    func fetchContacts(completion: @escaping (Result<[Event],ListEventServiceError>) -> Void) {
+    func fetchEvents(completion: @escaping (Result<[Event],ListEventServiceError>) -> Void) {
         guard let api = URL(string: self.apiURL) else {
             completion(.failure(.badURL))
             return
@@ -70,7 +70,7 @@ class ListEventService: NSObject, ListEventServiceProtocol {
             urlRequest.httpBody = try JSONEncoder().encode(checkIn)
             
             let dataTask = URLSession.shared.dataTask(with: urlRequest) { data, response, _ in
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201, let jsonData = data else {
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 else {
                     completion(.failure(.badURL))
                     return
                 }
@@ -80,7 +80,7 @@ class ListEventService: NSObject, ListEventServiceProtocol {
                     return
                 }
                 switch status {
-                case .ok:
+                case .created:
                     completion(.success(checkIn))
                 default:
                     completion(.failure(.unknow))
